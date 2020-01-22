@@ -1,0 +1,13 @@
+Source: vx-dga-l-migasfree-tags
+Section: utils
+Priority: extra
+Maintainer: Arturo Martín <amartinromero@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.7
+Homepage: http://wiki.vitalinux.educa.aragon.es
+
+Package: vx-dga-l-migasfree-tags
+Architecture: all 
+Depends: ${misc:Depends}, vx-dga-l-nwjs, migasfree-client(>=4.13)
+Description: Gestión de las Etiquetas Migasfree
+ Gestión de las Etiquetas Migasfree asociadas al equipo

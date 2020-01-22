@@ -1,0 +1,2 @@
+# Permiso para comprobar usuario/contraseña y pertenencia al grupo "sudo" (usuario administrador)
+ALL ALL=(ALL) NOPASSWD: /usr/bin/vx-check_usuario_admin

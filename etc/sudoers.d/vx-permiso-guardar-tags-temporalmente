@@ -1,0 +1,2 @@
+# Permiso para guardar temporalmente las etiquetas migasfree asignadas al equipo
+ALL ALL=(ALL) NOPASSWD: /usr/bin/tee /tmp/migasfree.tags

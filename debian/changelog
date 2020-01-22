@@ -1,0 +1,26 @@
+vx-dga-l-migasfree-tags (1.0-4) unstable; urgency=low
+
+  * Se sube la version unicamente para crear la iso y solucionar el problema de ... contiene un miembro de datos prematuro control.tar.xz antes de control.tar.gz, abandono
+  * Subir la versión para subir cambios a Migasfree
+
+ -- Arturo Martín <amartinromero@gmail.com>  Fri, 18 Jun 2019 01:45:06 +0200
+
+vx-dga-l-migasfree-tags (1.0-3) unstable; urgency=low
+
+  * Ficheros desktop a mismo nivel: gestion migasfree (migascripts)
+  * Eliminado el antiguo desktop de consulta
+
+ -- Arturo Martín <amartinromero@gmail.com>  Thu, 27 Dec 2018 01:45:06 +0200
+
+vx-dga-l-migasfree-tags (1.0-2) unstable; urgency=low
+
+  * Se ha modificado el Texto del botón Cancelar en la Post-Instalación por Salir de la Post-intalación
+  * En caso de no marcar ninguna etiqueta se indica en el swal informativo
+
+ -- Arturo Martín <amartinromero@gmail.com>  Thu, 30 Nov 2017 01:45:06 +0200
+
+vx-dga-l-migasfree-tags (1.0-1) unstable; urgency=low
+
+  * Aplicación de Gestión de las Etiquetas Migasfree asociadas al equipo basada en NW.js
+
+ -- Arturo Martín <amartinromero@gmail.com>  Mon, 6 Nov 2017 01:45:06 +0200

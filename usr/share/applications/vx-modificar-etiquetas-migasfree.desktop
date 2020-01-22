@@ -1,0 +1,18 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Modify your Migasfree Tags
+Name[en]=Modify your Migasfree Tags
+Name[es]=Modificar Etiquetas Migasfree
+Name[es_ES]=Modificar Etiquetas Migasfree
+Comment=Check and Modify your Migasfree Tags
+Comment[en]=Check and Modify your Migasfree Tags
+Comment[es]=Chequea y modifica tus Etiquetas Migasfree
+Icon=vx-etiquetas
+
+Exec=nw /usr/share/vitalinux/nwjs-apps/nwjs-migasfree-tags
+
+Terminal=false
+Type=Application
+Categories=MigaScripts;
+StartupNotify=true
+Hidden=false

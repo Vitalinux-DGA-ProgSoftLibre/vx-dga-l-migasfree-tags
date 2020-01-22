@@ -1,0 +1,19 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Check Migasfree Tags
+Name[en]=Check Migasfree Tags
+Name[es]=Consultar y Comprobar Etiquetas Migasfree
+Name[es_ES]=Consultar y Comprobar Etiquetas Migasfree
+Comment=Check and Modify your Migasfree Tags
+Comment[en]=Check and Modify your Migasfree Tags
+Comment[es]=Chequea y modifica tus etiquetas Migasfree
+#Icon=vx-tick
+Icon=migasfree
+
+Exec=nw /usr/share/vitalinux/nwjs-apps/nwjs-migasfree-tags consultar-etiquetas
+
+Terminal=false
+Type=Application
+Categories=MigaScripts;
+StartupNotify=true
+Hidden=false

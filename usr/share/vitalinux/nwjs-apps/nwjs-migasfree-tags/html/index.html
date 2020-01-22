@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="Equipo Técnico Vitalinux">
+    <link rel="icon" href="../images/vitalinux-edu.png">
+    <title>Cliente Migasfree - Etiquetado Migasfree</title>
+    <script src="https://use.fontawesome.com/79d3598d54.js"></script>
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="js/jquery.ajax-progress.js"></script>
+    <script type="text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/migasfree-tags.css">
+    <!-- <script type="text/javascript" src="../js/require.js"></script> -->
+</head>
+
+<body data-spy="scroll" data-target=".buscador-etiquetas" style="position: relative;">
+    <div class="preload">
+        <img src="http://i.imgur.com/KUJoe.gif">
+    </div>
+    <div id="botonera2" class="row botonera2">
+        <div class="col-md-3 col-md-offset-2 col-xs-3 col-xs-offset-2">
+            <p class="img-rounded minimizar" id="minimizar">
+                <i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Minimizar
+            </p>
+        </div>
+        <div class="col-md-3 col-md-offset-2 col-xs-3 col-xs-offset-2" id="botoncancelar1">
+            <p class="img-rounded cancelar" id="cancelar1">
+                <i class="fa fa-window-close" aria-hidden="true"></i>&nbsp;Cancelar
+            </p>
+        </div>
+    </div>
+    <div id="logresultado1" class="col-md-12 col-xs-12 logresultado">
+        <p id="tituloresultado" class="col-md-8 col-md-offset-2 col-xs-8 col-xs-offset-2 tituloresultado">
+                Resultado de la Comunicación con Migasfree:
+        </p>
+        <div id="logresultado2" class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 logresultado contenedores">
+        </div>
+    </div>
+    <div id="contenedor" class="container content">
+        <!-- <div class="row" style="background-color: black; max-height: 80px;">
+            <div class="cabecera col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2" style="background-color: black; white-space: nowrap; text-align: center; color: white;">
+                Cabecera
+            </div>
+        </div> -->
+        <div class="row" class="buscador-etiquetas" style="margin-top: 5px;">
+            <form class="form-inline">
+                <div class="form-group  col-md-4 col-xs-8">
+                    <label for="buscar-etiquetas" style="color: skyblue; font-weight: normal;">
+                        &nbsp;&nbsp;Buscar Etiquetas
+                    </label>
+                    <input class="form-control" 
+                        id="buscar-etiquetas" type="text" 
+                        placeholder="¿Patrón de búsqueda de Etiquetas?" 
+                        data-toggle="tooltip" 
+                        data-placement="right" 
+                        title="Filtra las Etiquetas Migasfree según un Patrón" 
+                        tabindex="1"
+                        autofocus="autofocus">
+                </div>
+            </form>
+        </div>
+        <!-- <div class="row">
+            <p id="salida1"> --De momento nada-- </p>
+            <p id="salida2"> --De momento nada-- </p>
+        </div> -->
+        <div class="row" style="height: 380px;">
+            <div class="d-inline contenedores col-md-6 col-xs-6" style="display: inline-block; overflow-x: auto; overflow-y: auto;">
+                <div>
+                    <table class="table" style="margin-bottom: 0px;">
+                        <tbody>
+                            <tr>
+                                <td id="cabecera2" style="color: skyblue; ">
+                                    Etiquetas Disponibles
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pre-scrollable" id="etiquetas-disponibles">
+                    ¡¡Problema no se pueden listar las etiquetas disponibles!!
+                </div>
+            </div>
+            <div class="d-inline contenedores col-md-6 col-xs-6" style="display: inline-block;">
+                <div>
+                    <table class="table" style="margin-bottom: 0px;">
+                        <tbody>
+                            <tr>
+                                <td id="cabecera2" style="color: skyblue; ">
+                                    Etiquetas Asignadas y Seleccionadas
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pre-scrollable" id="etiquetas-seleccionadas">
+                    ¡¡Problema no se pueden listar las etiquetas Asignadas o Seleccionadas!!
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row" style="background-color: black; max-height: 80px; position: absolute; left: 0px; bottom: 0px; width: 100%;">
+            <div class="piepagina" style="background-color: black; white-space: nowrap; text-align: center; color: white;">
+                <p>'Right click' to show context menu.</p>
+            <script type="text/javascript" src="../js/menu-boton_derecho.js"></script>
+                <script type="text/javascript" src="../js/os-conocer_sistema_operativo.js"></script>
+            </div>
+        </div> -->
+        <div class="row">
+            <div id="divaplicar" 
+                class="col-md-3 col-md-offset-2 col-xs-3 col-xs-offset-2"
+                role="button" tabindex="2">
+                <p class="img-rounded aplicar" id="aplicar">
+                    <i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Aplicar Etiquetas
+                </p>
+            </div>
+            <div id="divcancelar"
+                class="col-md-3 col-md-offset-2 col-xs-3 col-xs-offset-2"
+                role="button" tabindex="3">
+                <p class="img-rounded cancelar" id="cancelar2">
+                    <i class="fa fa-window-close" aria-hidden="true"></i>&nbsp;Cancelar
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal">
+        <!-- Place at bottom of page -->
+    </div>
+    <script type="text/javascript" src="../js/funciones-generales.js"></script>
+    <script type="text/javascript" src="../js/funciones-etiquetado-migasfree.js"></script>
+    <script type="text/javascript" src="../js/migasfree-tags.js"></script>
+</body>
+
+</html>

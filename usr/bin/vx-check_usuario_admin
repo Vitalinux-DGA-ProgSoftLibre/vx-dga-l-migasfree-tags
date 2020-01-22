@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+xcorrect=0 xwrong=1 enouser=2 enodata=3 esyntax=4 ehash=5  IFS=$
+die() {
+    printf '%s: %s\n' "$0" "$2" >&2
+    exit $1
+}
+report() {
+    if (($1 == xcorrect))
+        then echo 'ok'
+        else echo 'wrong'
+    fi
+    exit $1
+}
+USUARIO="$(whoami)"
+#if id "${USUARIO}" | grep "sudo" &> /dev/null ; then
+#	echo "=> El usuario pertenece al grupo sudo ..."
+#	return 0
+#elif test "${USUARIO}" == "root" ; then
+if test "${USUARIO}" == "root" ; then
+	#(($# == 1)) || die $esyntax "Usage: $(basename "$0") <username>"
+	if (($# == 1)) || (($# == 2)) ; then
+		case "$(getent passwd "$1" | awk -F: '{print $2}')" in
+	    	x)  ;;
+	    	'') die $enouser "error: Usuario '$1' no encontrado en el sistema ...";;
+	    	*)  die $enodata "error: $1's password aparece en /etc/shadow unshadowed!";;
+		esac
+		if (($# == 1)) ; then
+			if [ -t 0 ]; then
+			    IFS= read -rsp "[$(basename "$0")] password for $1: " pass
+			    printf '\n'
+			    echo "El IFS es \"${IFS}\""
+			else
+			    IFS= read -r pass
+			fi
+		fi
+		if (($# == 2)) ; then
+			pass="${2}"
+		fi
+	else
+		echo "=> Puedes indicar 1 (usuario) o 2 (usuario/password) parametros:"
+		die $esyntax "Usage: $(basename "$0") <username> [<password>]"
+	fi
+
+	set -f; ent=($(getent shadow "$1" | awk -F: '{print $2}')); set +f
+	case "${ent[1]}" in
+	    1) hashtype=md5;;   5) hashtype=sha-256;;   6) hashtype=sha-512;;
+	    '') case "${ent[0]}" in
+	            \*|!)   report $xwrong;;
+	            '')     die $enodata "error: no shadow entry (are you root?)";;
+	            *)      die $enodata 'error: failure parsing shadow entry';;
+	        esac;;
+	    *)  die $ehash "error: password hash type is unsupported";;
+	esac
+	#echo "El tipo de hashtype es ${ent[1]} y es $hashtype ..."
+
+	if [[ "${ent[*]}" = "$(mkpasswd -sm $hashtype -S "${ent[2]}" <<<"$pass")" ]] \
+		&& ( id "${1}" | grep "sudo" )
+	    then report $xcorrect
+	    else report $xwrong
+	fi
+else
+	die $xwrong "=> ¡¡Problema!! Necesitas ejecutar el script con permisos de root ..."
+fi

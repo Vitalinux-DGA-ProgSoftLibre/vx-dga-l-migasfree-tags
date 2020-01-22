@@ -1,0 +1,135 @@
+.logresultado,
+.botonera2 {
+    display: none;
+}
+
+#logresultado1 {
+    padding: 20px;
+    background-color: white;
+}
+
+.tituloresultado {
+    color: gray;
+    background-color: GoldenRod;
+    padding: 10px;
+    font-size: large;
+    font-weight: bolder;
+    text-align: center;
+}
+
+#logresultado2 {
+    padding: 15px;
+    background-color: azure;
+    max-height: 350px;
+    overflow: scroll;
+}
+
+.fieldset1 {
+    height: 400px;
+}
+
+.contenedores {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+p, td, .disable-select {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+/* Loading de la página */
+
+.content {
+    display: none;
+}
+
+.preload {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 225px;
+    left: 325px;
+}
+
+
+/* Loading de consultas Ajax */
+
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba( 255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+}
+
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+
+body.loading {
+    overflow: hidden;
+}
+
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+
+body.loading .modal {
+    display: block;
+}
+
+.etiquetas-seleccionadas {
+    background-color: Chartreuse;
+    cursor: pointer;
+    cursor: hand
+}
+
+.aplicar,
+.minimizar {
+    background-color: skyblue;
+}
+.aplicar:hover,
+.minimizar:hover {
+    background-color: blue;
+    font-weight: bold;
+}
+
+.cancelar {
+    background-color: Crimson;
+}
+.cancelar:hover {
+    background-color: DarkRed;
+    font-weight: bold;
+}
+
+.cerrar {
+    background-color: green;
+}
+.cerrar:hover {
+    background-color: darkgreen;
+    font-weight: bold;
+}
+
+.aplicar,
+.cancelar,
+.minimizar,
+.cerrar {
+    color: white;
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
