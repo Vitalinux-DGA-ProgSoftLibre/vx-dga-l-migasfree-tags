@@ -79,7 +79,8 @@
                 <template
                   v-if="
                     !etiquetasSinCambiar &&
-                      info['setetmigasfree'].value === null
+                      info['setetmigasfree'].value &&
+                      info['setsavetagstmp'].value
                   "
                 >
                   <button
@@ -136,6 +137,9 @@ module.exports = {
     pasarSiguiente() {
       return this.info.pasarsiguiente.value;
     },
+    setEtMigasfreeOk() {
+      return this.info.setetmigasfree.value;
+    },
     // Indice de comienzo del Asistente Form Wizard sincronizado con Vuex:
     stepIndex: {
       get() {
@@ -160,6 +164,11 @@ module.exports = {
         console.log("Vamos a aplicar las Etiquetas seleccionadas ...");
         this.ejecutarConfirmacion();
       }
+    },
+    setEtMigasfreeOk(New, Old) {
+      if (New) {
+        this.saveTmpMigasfreeTags();
+      }
     }
   },
   methods: {
@@ -182,16 +191,26 @@ module.exports = {
     onComplete() {
       this.ModificarInfo({ name: "confirmacion", value: true });
     },
+    saveTmpMigasfreeTags() {
+      // Si la modificación anterior ha sido exitosa se guardarán en: /tmp/migasfree.tags
+      console.log("=> Vamos a guardar las Tags en /tmp/migasfree.tags ...");
+      comando =
+        this.listaEtFinal.length > 0
+          ? `sudo vx-migasfree-tags-save-tmp ${this.listaEtFinal.join(" ")}`
+          : "sudo vx-migasfree-tags-save-tmp ''";
+      // this.AsignarEtiquetas({ comando });
+      this.ExecCommandAndSetParamAsync({
+        comando,
+        mutacion: "ModificarInfo",
+        parametro: "setsavetagstmp",
+        valorok: true,
+        valorerr: false
+      });
+    },
     ejecutarConfirmacion() {
       console.log("=> Ejecutamos lo indicado por el usuario ...");
       let resultado = null;
 
-      // Asignamos las etiquetas Migasfree seleccionadas:
-      // if (
-      //   this.listaEtFinal != null &&
-      //   this.listaEtFinal.sort().toString() !=
-      //     this.lisetmigasfreeset.sort().toString()
-      // )
       if (!this.etiquetasSinCambiar) {
         comando =
           this.listaEtFinal.length > 0
@@ -205,22 +224,6 @@ module.exports = {
           valorok: true,
           valorerr: false
         });
-        // Si la modificación anterior ha sido exitosa se guardarán en: /tmp/migasfree.tags
-        if (this.info.setetmigasfree.value) {
-          comando =
-            this.listaEtFinal.length > 0
-              ? `sudo vx-migasfree-tags-save-tmp ${this.listaEtFinal.join(" ")}`
-              : "sudo vx-migasfree-tags-save-tmp ''";
-          // this.AsignarEtiquetas({ comando });
-          this.ExecCommandAndSetParamAsync({
-            comando,
-            mutacion: "ModificarInfo",
-            parametro: "setsavetagstmp",
-            valorok: true,
-            valorerr: false
-          });
-        }
-
         /* resultado = this.EjecutarSincrono(comando);
         resultado != "error"
           ? this.ModificarInfo({ name: "setetmigasfree", value: true })

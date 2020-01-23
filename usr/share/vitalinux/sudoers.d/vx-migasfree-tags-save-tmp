@@ -1,0 +1,3 @@
+# Permiso para guardar temporalmente las etiquetas migasfree asignadas al equipo en /tmp/migasfree.tags
+ALL ALL=(ALL) NOPASSWD: /usr/bin/vx-migasfree-tags-save-tmp
+##

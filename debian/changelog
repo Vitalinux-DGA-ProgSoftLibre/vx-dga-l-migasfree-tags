@@ -1,9 +1,15 @@
+vx-dga-l-migasfree-tags (2.1-2) unstable; urgency=low
+
+  * Guardamos las etiquetas tras modificarlas en /tmp/migasfree.tags
+
+ -- Arturo Martín <amartinromero@gmail.com>  Thu, 23 Jan 2020 09:45:06 +0200
+
 vx-dga-l-migasfree-tags (2.1-1) unstable; urgency=low
 
   * Cambiamos la interfaz de usuario a Vue.js basada en vue-vx-postinstall
   * Accedemos al formulario de gestión de Tags mediante polkit
 
- -- Arturo Martín <amartinromero@gmail.com>  Fri, 18 Jun 2019 01:45:06 +0200
+ -- Arturo Martín <amartinromero@gmail.com>  Thu, 23 Jan 2020 01:45:06 +0200
 
 vx-dga-l-migasfree-tags (1.0-4) unstable; urgency=low
 
