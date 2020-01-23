@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FICHFUCS="/usr/bin/vx-funcs-bash"
+[ -f "${FICHFUCS}" ] && . "${FICHFUCS}"
+
+vx-check_user_root
+
+FICH="/tmp/migasfree.tags"
+echo -n "${@}" > "${FICH}" && \
+echo "=> Ok!! Etiquetas Guardadas en ${FICH}" || \
+echo "=> Error!! No se han podido guardar las etiquetas en ${FICH}"
+

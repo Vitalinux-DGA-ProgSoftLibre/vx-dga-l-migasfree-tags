@@ -1,0 +1,14 @@
+#!/bin/bash
+
+FICHFUCS="/usr/bin/vx-funcs-bash"
+[ -f "${FICHFUCS}" ] && . "${FICHFUCS}"
+
+[[ "${USER}" != "root" ]] && \
+vx-mensaje "Modificar Etiquetas Migasfree" \
+"¡¡Importante!! Debes ser usuario \"root\" para modificar las Etiquetas de Migasfree" && \
+exit 1
+
+DIR="/usr/share/vitalinux/nwjs-apps/vue-vx-modificar-migasfree-tags"
+# Lanzamos la Vue.js app incrustada en Nw.js:
+[ -d "${DIR}" ] && \
+cd "${DIR}" && nw . 2> /dev/null

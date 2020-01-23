@@ -1,0 +1,69 @@
+#!/bin/bash
+
+FICHTMP="/tmp/info-migasfree"
+echo -n "" > "${FICHTMP}"
+
+FICHFUNCS="/usr/bin/vx-funcs-bash"
+[ -f "${FICHFUNCS}" ] && . "${FICHFUNCS}"
+
+# CID:
+CID=""
+if [ -f "/tmp/.cid.html" ] ; then
+    CID="$(cat "/tmp/.cid.html"  | \
+        grep -E "<h1>.*</h1>" | \
+        sed -e "s#\(<h1>\)\(.*\)\(</h1>\)#\2#g" | \
+        tr -d '[:space:]')"
+fi
+if (( ${#CID} == 0 )) && [ -f "/usr/bin/migasfree-cid" ] ; then
+    CID="$(migasfree-cid)"
+fi
+
+NOMBRE="${HOSTNAME}"
+echo -e "Información asociada al equipo Vitalinux: CID (<b><tt><span foreground='blue'>${CID}</span></tt></b>) y HostName (<b><tt><span foreground='blue'>${NOMBRE}</span></tt></b>)" >> "${FICHTMP}"
+DISTRO=$(lsb_release -a 2> /dev/null | grep "Description:" | tr -s " " " " | cut -d":" -f2)
+ARQUIDISTRO=$(getconf LONG_BIT)
+echo -e "Versión Ubuntu: <b><tt><span foreground='blue'>${DISTRO} (${ARQUIDISTRO}-bits)</span></tt></b>" >> "${FICHTMP}"
+KERNEL="$(uname -s) $(uname -r)"
+echo -e "Kernel: <b><tt><span foreground='blue'>${KERNEL}</span></tt></b>" >> "${FICHTMP}"
+# Para saber las arquitecturas soportadas rescatamos la segunda línea de la salida de lscpu:
+#ARQUIHARDWARE="$(lscpu | grep 'CPUs' | cut -d':' -f2)"
+ARQUIHARDWARE="$(vx-trim "$(lscpu | awk 'NR==2' | cut -d':' -f2)")"
+echo -e "Arquitecturas de Vitalinux soportadas por el Hardware: <b><tt><span foreground='blue'>${ARQUIHARDWARE}</span></tt></b>" >> "${FICHTMP}"
+VEROPENGL="$(glxinfo | grep "OpenGL version" | awk -F":" '{ print $2 }')"
+echo -e "Versión de OpenGL: <b><tt><span foreground='blue'>${VEROPENGL}</span></tt></b>" >> "${FICHTMP}"
+# Información sobre el tipo de BIOS del equipo: BIOS Legacy o UEFI
+[[ -d "/sys/firmware/efi" ]] && TIPOBIOS="BIOS UEFI" || TIPOBIOS="BIOS Legacy"
+echo -e "Tipo de BIOS: <b><tt><span foreground='blue'>${TIPOBIOS}</span></tt></b>" >> "${FICHTMP}"
+
+FICH="/tmp/migasfree.tags"
+if test -f "${FICH}" ; then
+    ETIQUETAS="$(cat "${FICH}")"
+else
+    ETIQUETAS="$(sudo migasfree-tags -g)"
+fi
+echo -e "\n<b>Etiquetas Migasfree asignadas</b>:<b><tt><span foreground='blue'>" >> "${FICHTMP}"
+if (( ${#ETIQUETAS} == 0 )) ; then
+    echo " -- Ninguna -- " >> "${FICHTMP}"
+else
+    echo ${ETIQUETAS} | tr -s " " "\n" | grep -n "-" | sed -e "s/:/) /g" | sed -e "s/.*/  &/g" >> "${FICHTMP}"
+fi
+echo -e "</span></tt></b>" >> "${FICHTMP}"
+
+if vx-detectar_gui && [[ -z "${1}" ]] ; then
+    yad --title "Información de Parámetros de Red" \
+    --center \
+    --image migasfree \
+    --fixed \
+    --window-icon vitalinux \
+    --text \
+    "$(cat "${FICHTMP}") \n" \
+    --buttons-layout="center" \
+    --button="Modificar Etiquetas":1 \
+    --button="Cerrar Ventana":0
+    if (( ${?} == 1 )) ; then
+        /usr/bin/vx-pk-migasfree-modificartags
+    fi
+else
+    # Mostramos la información prescindiendo del etiquetado de formato:
+    sed -e 's/<[^>]*>//g' "${FICHTMP}"
+fi

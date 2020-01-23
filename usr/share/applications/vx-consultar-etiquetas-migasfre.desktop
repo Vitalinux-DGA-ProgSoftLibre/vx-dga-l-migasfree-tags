@@ -10,7 +10,7 @@ Comment[es]=Chequea y modifica tus etiquetas Migasfree
 #Icon=vx-tick
 Icon=migasfree
 
-Exec=nw /usr/share/vitalinux/nwjs-apps/nwjs-migasfree-tags consultar-etiquetas
+Exec=/usr/bin/vx-migasfree-consultar-tags
 
 Terminal=false
 Type=Application

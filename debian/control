@@ -8,6 +8,6 @@ Homepage: http://wiki.vitalinux.educa.aragon.es
 
 Package: vx-dga-l-migasfree-tags
 Architecture: all 
-Depends: ${misc:Depends}, vx-dga-l-nwjs, migasfree-client(>=4.13)
+Depends: ${misc:Depends}, vx-dga-l-nwjs, migasfree-client(>=4.13), vx-dga-l-scripts
 Description: Gestión de las Etiquetas Migasfree
  Gestión de las Etiquetas Migasfree asociadas al equipo

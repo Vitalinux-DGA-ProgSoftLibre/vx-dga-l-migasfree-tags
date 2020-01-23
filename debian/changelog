@@ -1,3 +1,10 @@
+vx-dga-l-migasfree-tags (2.1-1) unstable; urgency=low
+
+  * Cambiamos la interfaz de usuario a Vue.js basada en vue-vx-postinstall
+  * Accedemos al formulario de gestión de Tags mediante polkit
+
+ -- Arturo Martín <amartinromero@gmail.com>  Fri, 18 Jun 2019 01:45:06 +0200
+
 vx-dga-l-migasfree-tags (1.0-4) unstable; urgency=low
 
   * Se sube la version unicamente para crear la iso y solucionar el problema de ... contiene un miembro de datos prematuro control.tar.xz antes de control.tar.gz, abandono

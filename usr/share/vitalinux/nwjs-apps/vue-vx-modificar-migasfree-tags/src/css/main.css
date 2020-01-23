@@ -1,0 +1,52 @@
+.borde1 {
+    border-width: 2px;
+    border-color: aquamarine;
+    background-color: aliceblue;
+    padding: 5px;
+}
+
+.font-titulo {
+    /* font-family: 'Fjalla One'; */
+    font-family: 'Oswald';
+}
+
+body {
+    font-family: 'Nanum Gothic';
+    overflow: hidden;
+    height: 600px;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.cursor:hover {
+    background-color: orange
+}
+
+::-webkit-input-placeholder {
+    color: peachpuff;
+    font-size: 0.8em;
+}
+
+::-moz-placeholder {
+    color: peachpuff;
+    font-size: 0.8em;
+}
+
+:-ms-input-placeholder {
+    color: peachpuff;
+    font-size: 0.8em;
+}
+
+::placeholder {
+    color: peachpuff;
+    font-size: 0.8em;
+}
+
+.non-selectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
