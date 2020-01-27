@@ -20,16 +20,20 @@ set -e
 
 case "$1" in
     configure)
-		for FICH in "/usr/bin/vx-check_usuario_admin" ; do
-				if test -f "${FICH}" ; then
-					chmod +x "${FICH}"
-				fi
-		done
+        for FICH in "/usr/bin/vx-check_usuario_admin" \
+        "/usr/bin/vx-migasfree-consultar-tags" \
+        "/usr/bin/vx-migasfree-modificar-tags" \
+        "/usr/bin/vx-migasfree-tags-save-tmp" ; do
+            if test -f "${FICH}" ; then
+                chmod +x "${FICH}" && \
+                echo "=> Asignando permiso de Ejecución: ${FICH}"
+            fi
+        done
     ;;
-
+    
     abort-upgrade|abort-remove|abort-deconfigure)
     ;;
-
+    
     *)
         echo "postinst called with unknown argument \`$1'" >&2
         exit 1

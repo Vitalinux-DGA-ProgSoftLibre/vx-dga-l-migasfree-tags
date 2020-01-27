@@ -1,3 +1,10 @@
+vx-dga-l-migasfree-tags (1.0-5) unstable; urgency=low
+
+  * Modificamos la forma de consultar las etiquetas
+  * Garantizamos que al modificar las etiquetas se guarden temporalmente en /tmp/migasfree.tags
+
+ -- Arturo Martín <amartinromero@gmail.com>  Mon, 27 Jan 2020 01:45:06 +0200
+
 vx-dga-l-migasfree-tags (1.0-4) unstable; urgency=low
 
   * Se sube la version unicamente para crear la iso y solucionar el problema de ... contiene un miembro de datos prematuro control.tar.xz antes de control.tar.gz, abandono

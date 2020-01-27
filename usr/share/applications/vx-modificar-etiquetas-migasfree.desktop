@@ -9,7 +9,8 @@ Comment[en]=Check and Modify your Migasfree Tags
 Comment[es]=Chequea y modifica tus Etiquetas Migasfree
 Icon=vx-etiquetas
 
-Exec=nw /usr/share/vitalinux/nwjs-apps/nwjs-migasfree-tags
+#Exec=nw /usr/share/vitalinux/nwjs-apps/nwjs-migasfree-tags
+Exec=vx-migasfree-modificar-tags
 
 Terminal=false
 Type=Application
