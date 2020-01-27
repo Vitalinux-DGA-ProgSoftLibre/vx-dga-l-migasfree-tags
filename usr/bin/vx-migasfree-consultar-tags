@@ -61,7 +61,7 @@ if vx-detectar_gui && [[ -z "${1}" ]] ; then
     --button="Modificar Etiquetas":1 \
     --button="Cerrar Ventana":0
     if (( ${?} == 1 )) ; then
-        /usr/bin/vx-migasfree-modificartags
+        /usr/bin/vx-migasfree-modificar-tags
     fi
 else
     # Mostramos la información prescindiendo del etiquetado de formato:

@@ -2,6 +2,7 @@ vx-dga-l-migasfree-tags (1.0-5) unstable; urgency=low
 
   * Modificamos la forma de consultar las etiquetas
   * Garantizamos que al modificar las etiquetas se guarden temporalmente en /tmp/migasfree.tags
+  * Pasamos los CSS y JS de los node_modules a las subcarpetas CSS y JS y no depender de ellos
 
  -- Arturo Martín <amartinromero@gmail.com>  Mon, 27 Jan 2020 01:45:06 +0200
 
