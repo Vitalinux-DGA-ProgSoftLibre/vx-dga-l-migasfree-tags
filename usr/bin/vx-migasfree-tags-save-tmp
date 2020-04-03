@@ -3,11 +3,15 @@
 FICHFUCS="/usr/bin/vx-funcs-bash"
 [ -f "${FICHFUCS}" ] && . "${FICHFUCS}"
 
-vx-check_user_root
+EJECUTOR="$(whoami)"
+[ "${EJECUTOR}" != "root" ] && \
+echo "=> ¡¡Error!! Debes ser root para gestionar las etiquetas migasfree" && \
+exit 1
 
 FICH="/tmp/migasfree.tags"
 if [[ "${1}" == "-g" ]] ; then
-    if ETIQUETAS="$(migasfree-tags --save-tmp)" ; then
+    [ -f "${FICH}" ] && rm -f "${FICH}"
+    if ETIQUETAS="$(migasfree-tags -g)" ; then
         echo "${FICH}: $(cat ${FICH})"
     fi
 else
