@@ -6,7 +6,12 @@ FICHFUCS="/usr/bin/vx-funcs-bash"
 vx-check_user_root
 
 FICH="/tmp/migasfree.tags"
-echo -n "${@}" > "${FICH}" && \
-echo "=> Ok!! Etiquetas Guardadas en ${FICH}" || \
-echo "=> Error!! No se han podido guardar las etiquetas en ${FICH}"
-
+if [[ "${1}" == "-g" ]] ; then
+    if ETIQUETAS="$(migasfree-tags --save-tmp)" ; then
+        echo "${FICH}: $(cat ${FICH})"
+    fi
+else
+    echo -n "${@}" > "${FICH}" && \
+    echo "=> Ok!! Etiquetas Guardadas en ${FICH}: ${@}" || \
+    echo "=> Error!! No se han podido guardar las etiquetas en ${FICH}"
+fi

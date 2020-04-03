@@ -1,0 +1,79 @@
+#!/bin/bash
+
+ORIGINAL="migasfree-tags.orig"
+FICHLOCK="/tmp/migasfree.tags.lock"
+FICHTAGS="/tmp/migasfree.tags"
+
+[ "$(whoami)" != "root" ] && \
+echo "=> Necesitas ser root para hacer uso de migasfree-tags" && \
+exit 1
+
+CONT=0
+while [[ -f "${FICHLOCK}" ]] && (( CONT < 300 )) ; do
+    sleep 1
+    (( CONT++ ))
+done
+(( CONT == 300 )) && \
+echo "=> Hay un problema de conexión al tratar de obtener las etiquetas" && \
+exit 2
+
+touch "${FICHLOCK}"
+
+function salir() {
+    rm "${FICHLOCK}"
+    exit ${1}
+}
+
+function get_tags() {
+    SALIDA="${1:-"true"}"
+    if [ ! -f "${FICHTAGS}" ] ; then
+        # Durante 2 minutos tratamos de obtener las etiquetas:
+        CONT=0
+        EXITO=0
+        while (( CONT < 24 )) && (( EXITO == 0)) ; do
+            if ETIQUETAS="$("${ORIGINAL}" -g)" ; then
+                EXITO=1
+                echo -n "${ETIQUETAS}" | sed 's/"//g' > "${FICHTAGS}"
+            fi
+            sleep 5
+            ((CONT++))
+        done
+        (( EXITO == 0 )) && \
+        echo "Problemas para obtener las etiquetas de Migasfree ... Salimos!!" && \
+        salir "1"
+    fi
+    [ -f "${FICHTAGS}" ] && ETIQUETAS="$(sed 's/"//g' "${FICHTAGS}")" || salir "1"
+    "${SALIDA}" && echo "${ETIQUETAS}"
+    salir "0"
+}
+
+
+
+# Comprobamos si el primer parámetro quiere obtener las etiquetas
+if [[ "${1}" =~ ^-g$|^--get$ ]] ; then
+    get_tags
+fi
+
+# Comprobamos si el primer parámetro quiere obtener las etiquetas
+if [[ "${1}" =~ ^--save-tmp$ ]] ; then
+    get_tags "false"
+fi
+
+# Comprobamos si se quiere reetiquetar al equipo
+if [[ "${1}" =~ ^-c$|^--communicate$|^-s$|^--set$ ]] ; then
+    if "${ORIGINAL}" "${@}" ; then
+        rm "${FICHTAGS}"
+        get_tags "false"
+    fi
+    salir "1"
+fi
+
+if [[ "${1}" =~ ^-a$|^--available$ ]] ; then
+    "${ORIGINAL}" "${@}"
+    salir "0"
+fi
+
+if [[ -z "${1}" ]] ; then
+    "${ORIGINAL}"
+    salir "2"
+fi

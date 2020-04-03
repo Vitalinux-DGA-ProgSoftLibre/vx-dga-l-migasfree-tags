@@ -20,16 +20,26 @@ set -e
 
 case "$1" in
     configure)
-		for FICH in "/usr/bin/vx-check_usuario_admin" ; do
-				if test -f "${FICH}" ; then
-					chmod +x "${FICH}"
-				fi
-		done
+        for FICH in "/usr/bin/vx-check_usuario_admin" ; do
+            if test -f "${FICH}" ; then
+                chmod +x "${FICH}"
+            fi
+        done
+        
+        # Divertimos el ejecutable migasfree-tags para hacer un lock y evitar errores en migasfree:
+        PAQUETE="vx-dga-l-migasfree-tags"
+        _FILE=/usr/bin/migasfree-tags
+        dpkg-divert --add --package "${PAQUETE}" --rename \
+        --divert $_FILE.orig $_FILE
+        [ ! -e $_FILE -o -L $_FILE ] && \
+        [ -f "/usr/share/divert$_FILE" ] && \
+        chmod +x "/usr/share/divert$_FILE" && \
+        ln -sf /usr/share/divert$_FILE $_FILE
     ;;
-
+    
     abort-upgrade|abort-remove|abort-deconfigure)
     ;;
-
+    
     *)
         echo "postinst called with unknown argument \`$1'" >&2
         exit 1
