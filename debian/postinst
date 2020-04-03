@@ -22,9 +22,13 @@ case "$1" in
     configure)
         for FICH in "/usr/bin/vx-check_usuario_admin" ; do
             if test -f "${FICH}" ; then
-                chmod +x "${FICH}"
+                chmod +x "${FICH}" && \
+                echo "=> Permiso de ejecución a ${FICH} ..."
             fi
         done
+        chmod +x "/usr/bin/vx-migasfree-"* && \
+        chmod +x "/usr/bin/vx-pk-migasfree-"* && \
+        echo "=> Permiso de ejecución a vx-migasfree-* y vx-pk-migasfree-*"
         
         # Divertimos el ejecutable migasfree-tags para hacer un lock y evitar errores en migasfree:
         PAQUETE="vx-dga-l-migasfree-tags"
