@@ -1,0 +1,95 @@
+#!/bin/bash
+
+ORIGINAL="migasfree-tags.orig"
+FICHLOCK="/tmp/migasfree.tags.lock"
+FICHTAGS="/tmp/migasfree.tags"
+TIMELOCK="15"
+
+[ "$(whoami)" != "root" ] && \
+echo "=> Necesitas ser root para hacer uso de migasfree-tags" && \
+exit 1
+
+function desbloquear() {
+    flock -u "$lock_fd"
+}
+
+function bloquear() {
+    # Como primer parametro pasammos el modo de bloqueo, lectura (-s) o escritura (-w):
+    # Creamos un descriptor que nos permitirá escribir sobre el archivo bloqueado:
+    exec {lock_fd}>"${FICHLOCK}" || exit 1
+    flock -w "${TIMELOCK}" "$lock_fd" || \
+    {
+        echo "=> ERROR: migasfree-tags flock() ha fallado" >&2;
+        exit 1;
+    }
+}
+
+function salir() {
+    exit ${1}
+}
+
+function get_tags() {
+    SALIDA="${1:-"true"}"
+    if [ ! -f "${FICHTAGS}" ] ; then
+        # Durante 2 minutos tratamos de obtener las etiquetas:
+        CONT=0
+        EXITO=0
+        while (( CONT < 24 )) && (( EXITO == 0)) ; do
+            if ETIQUETAS="$("${ORIGINAL}" -g)" ; then
+                EXITO=1
+                echo -n "${ETIQUETAS}" | sed 's/"//g' > "${FICHTAGS}"
+                # echo -n "${ETIQUETAS}" | sed 's/"//g' 1>&$lock_fd
+            fi
+            sleep 5
+            ((CONT++))
+        done
+        (( EXITO == 0 )) && \
+        echo "Problemas para obtener las etiquetas de Migasfree ... Salimos!!" && \
+        salir "1"
+    fi
+    [ -f "${FICHTAGS}" ] && ETIQUETAS="$(sed 's/"//g' "${FICHTAGS}")" || salir "1"
+    "${SALIDA}" && echo "${ETIQUETAS}"
+}
+
+bloquear
+
+# Comprobamos si el primer parámetro quiere obtener las etiquetas
+if [[ "${1}" =~ ^-g$|^--get$ ]] ; then
+    get_tags
+fi
+
+# Comprobamos si el primer parámetro quiere obtener las etiquetas
+if [[ "${1}" =~ ^--save-tmp$ ]] ; then
+    [ -f "${FICHTAGS}" ] && rm "${FICHTAGS}"
+    get_tags "false"
+fi
+
+function sincronizar_tags() {
+    if "${ORIGINAL}" -c "${@}" ; then
+        [ -f "${FICHTAGS}" ] && rm "${FICHTAGS}"
+        get_tags "false"
+    fi
+}
+
+# Comprobamos si se quiere reetiquetar al equipo
+if [[ "${1}" =~ ^-c$|^--communicate$ ]] ; then
+    shift && sincronizar_tags "${@}"
+fi
+
+if [[ "${1}" =~ ^-s$|^--set$ ]] ; then
+    shift && sincronizar_tags "${@}"
+    desbloquear
+    migasfree --update --force-upgrade
+fi
+
+if [[ "${1}" =~ ^-a$|^--available$ ]] ; then
+    "${ORIGINAL}" "${@}"
+    salir "0"
+fi
+
+if [[ -z "${1}" ]] ; then
+    "${ORIGINAL}"
+    salir "2"
+fi
+
+salir "0"

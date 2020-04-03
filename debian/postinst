@@ -29,6 +29,19 @@ case "$1" in
                 echo "=> Asignando permiso de Ejecución: ${FICH}"
             fi
         done
+        chmod +x "/usr/bin/vx-migasfree-"* && \
+        echo "=> Asignando permisos de ejecución a los scripts: vx-migasfree-*"
+        
+        # Divertimos el ejecutable migasfree-tags para hacer un lock y evitar errores en migasfree:
+        PAQUETE="vx-dga-l-migasfree-tags"
+        _FILE=/usr/bin/migasfree-tags
+        dpkg-divert --add --package "${PAQUETE}" --rename \
+        --divert $_FILE.orig $_FILE
+        [ ! -e $_FILE -o -L $_FILE ] && \
+        [ -f "/usr/share/divert$_FILE" ] && \
+        chmod +x "/usr/share/divert$_FILE" && \
+        ln -sf /usr/share/divert$_FILE $_FILE
+        
     ;;
     
     abort-upgrade|abort-remove|abort-deconfigure)
