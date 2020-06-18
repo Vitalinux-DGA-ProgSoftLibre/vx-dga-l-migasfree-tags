@@ -1,7 +1,9 @@
 <template>
   <div class="row justify-content-center">
-    <div class="text-center col-10" style="height: 400px">
+    <div class="text-center col-12">
       <h2 class="my-2 font-titulo text-info">Centros Vitalinux en la Comunidad de Aragón</h2>
+    </div>
+    <div class="text-center col-12" style="height: 400px">
       <!-- <template v-show="mostrarMapa"> -->
       <!-- Info componentes Vue2Leaflet y su uso: https://korigan.github.io/Vue2Leaflet/#/components/ -->
       <l-map :zoom="7" :center="startLocation" style="height: 100%; width: 100%" @ready="Aviso">

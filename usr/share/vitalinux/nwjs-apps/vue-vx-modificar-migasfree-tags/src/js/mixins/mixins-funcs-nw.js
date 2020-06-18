@@ -30,7 +30,8 @@ Vue.mixin({
           nw.process.stdout.write(
             `=> Para terminar actualizaremos contra Migasfree: \"${comando}\"\n`
           );
-          execSync(comando);
+          // Al ejecutar un migasfree-tags -s no necesitamos el migasfree upgrade:
+          // execSync(comando);
           nw.process.stdout.write(
             "=> Actualización contra Migasfree forzada ...\n"
           );
@@ -43,10 +44,10 @@ Vue.mixin({
       if (this.Argumentos.length > 0) {
         nw.process.stdout.write(
           "=> Los " +
-            this.Argumentos.length +
-            " argumentos pasados al ejecutable son: " +
-            this.Argumentos +
-            "\n"
+          this.Argumentos.length +
+          " argumentos pasados al ejecutable son: " +
+          this.Argumentos +
+          "\n"
         );
         nw.process.stdout.write(
           "=> El primer argumento es: " + this.Argumentos[0] + "\n"
@@ -75,7 +76,7 @@ Vue.mixin({
         height: 600
         //fullscreen: true
       };
-      nw.Window.open(url, options, function(win) {
+      nw.Window.open(url, options, function (win) {
         //win.on('loaded', function () {
         console.log("Se ha abierto una nueva ventana en tu aplicación: " + url);
         //});
@@ -86,13 +87,13 @@ Vue.mixin({
     Argumentos() {
       return nw.App.fullArgv;
     },
-    settingsFile: function() {
+    settingsFile: function () {
       let path = nw.require("path");
       let settingsFileLocation = path.join(nw.App.dataPath, "settings.json");
       return settingsFileLocation;
     },
     // Para poder hacer referencia desde una template de un componente al objeto "nw":
-    nw: function() {
+    nw: function () {
       return nw;
     },
     path() {
