@@ -1,3 +1,9 @@
+vx-dga-l-migasfree-tags (1.0-7) unstable; urgency=low
+
+  * Modificamos /usr/share/divert/usr/bin/migasfree-tags para hacer uso de -s en lugar de -c
+
+ -- Arturo Martín <amartinromero@gmail.com>  Thu, 18 Jun 2020 07:40:06 +0200
+
 vx-dga-l-migasfree-tags (1.0-6) unstable; urgency=low
 
   * Adaptamos vx-migasfree-tags-save-tmp para que si se le pasa un -g como parametro las consulte y grabe

@@ -71,15 +71,23 @@ function sincronizar_tags() {
     fi
 }
 
+function asignar_tags() {
+    if "${ORIGINAL}" -s "${@}" ; then
+        [ -f "${FICHTAGS}" ] && rm "${FICHTAGS}"
+        get_tags "false"
+    fi
+}
+
 # Comprobamos si se quiere reetiquetar al equipo
 if [[ "${1}" =~ ^-c$|^--communicate$ ]] ; then
     shift && sincronizar_tags "${@}"
 fi
 
 if [[ "${1}" =~ ^-s$|^--set$ ]] ; then
-    shift && sincronizar_tags "${@}"
+    shift && asignar_tags "${@}"
     desbloquear
-    migasfree --update --force-upgrade
+    # Al ejecutar un migasfree-tags -s no se requiere un migasfree upgrade:
+    # migasfree --update --force-upgrade
 fi
 
 if [[ "${1}" =~ ^-a$|^--available$ ]] ; then
