@@ -2,7 +2,7 @@
 // Create a tray icon
 let tray = new nw.Tray({
   title: "Vitalinux",
-  tooltip: "Post-Instalación de Vitalinux",
+  tooltip: "Etiquetado Migasfree",
   icon: "assets/vitalinux-edu.png"
 });
 
@@ -32,14 +32,15 @@ let menuItems = [
   {
     type: "normal",
     label: "Mostrar App",
-    click: function() {
+    click: function () {
       nw.Window.get().show();
+      nw.Window.get().focus();
     }
   },
   {
     type: "normal",
     label: "Ocultar App",
-    click: function() {
+    click: function () {
       nw.Window.get().hide();
     }
   },
@@ -49,7 +50,7 @@ let menuItems = [
   {
     type: "normal",
     label: "Salir",
-    click: function() {
+    click: function () {
       // Matamos al proceso Migasfree:
       try {
         let comando = "sudo vx-kill-cliente-migasfree";
@@ -69,7 +70,7 @@ let menuItems = [
 ];
 
 // Append all menu items to the menu
-menuItems.forEach(function(item) {
+menuItems.forEach(function (item) {
   menu.append(new nw.MenuItem(item));
 });
 

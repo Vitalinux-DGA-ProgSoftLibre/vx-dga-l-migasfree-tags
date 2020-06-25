@@ -1,13 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 const router = new VueRouter({
-  routes: [
-    {
+  routes: [{
       path: "*",
       redirect: "/home"
     },
     {
       path: "/home",
-      name: "Post-Install",
+      name: "Etiquetado Migasfree",
       component: httpVueLoader("src/views/Home.vue")
     },
     {
@@ -31,13 +30,13 @@ https: router.beforeEach((to, from, next) => {
   /* console.log(typeof paso_ant + " - Con valor - " + paso_ant + " desde:")
   console.log(to)
   console.log(from) */
-  if (paso > 0 && from.name === "Post-Install") {
+  if (paso > 0 && from.name === "Etiquetado Migasfree") {
     store.commit("ModificarInfo", {
       name: "paso_ant",
       value: paso
     });
   }
-  if (to.name === "Post-Install" && paso_ant > 0) {
+  if (to.name === "Etiquetado Migasfree" && paso_ant > 0) {
     store.commit("ModificarInfo", {
       name: "paso",
       value: paso_ant

@@ -32,8 +32,12 @@
             <Confirmarinfo :anchura="10"></Confirmarinfo>
           </tab-content>
 
-          <tab-content :title="titulo3" icon="ti-desktop">
+          <!-- <tab-content :title="titulo3" icon="ti-desktop">
             <Ejecutarinfo :anchura="10"></Ejecutarinfo>
+          </tab-content>-->
+
+          <tab-content :title="titulo4" icon="ti-desktop">
+            <Mostrarinfo :anchura="10"></Mostrarinfo>
           </tab-content>
 
           <template slot="footer" slot-scope="props">
@@ -42,22 +46,33 @@
                 <button
                   type="button"
                   class="btn boton rounded font-titulo w-100"
+                  v-if="!props.isLastStep"
                   @click.prevent="closeWindow(1)"
+                  v-b-tooltip.hover
+                  :title="tooltipsalir"
                 >
                   Salir
                 </button>
+                <!-- <button
+                  type="button"
+                  class="btn boton rounded font-titulo w-100"
+                  v-if="props.isLastStep"
+                  @click.prevent="closeWindow(0)"
+                >
+                  Cerrar
+                </button> -->
               </div>
               <div class="col-2"></div>
               <div class="col-2">
                 <button
                   class="btn boton rounded font-titulo w-100"
-                  v-if="props.activeTabIndex > 0"
+                  v-if="!props.isLastStep && props.activeTabIndex > 0"
                   @click.prevent="volverSeleccion()"
                   v-b-tooltip.hover
                   :title="tooltipanterior"
                 >
                   <!-- @click.prevent="props.prevTab()"
-                > -->
+                  >-->
                   Anterior
                 </button>
               </div>
@@ -66,31 +81,46 @@
                   class="btn boton rounded font-titulo w-100"
                   v-if="stepIndex == 0"
                   @click.prevent="props.nextTab()"
+                  v-b-tooltip.hover
+                  :title="tooltipcontinuar"
                 >
                   Continuar Modificando Etiquetas
                 </button>
                 <button
                   class="btn boton rounded font-titulo w-100"
-                  v-if="!props.isLastStep && stepIndex != 0"
+                  v-if="
+                    !props.isLastStep && stepIndex != 0 && !etiquetasSinCambiar
+                  "
                   @click.prevent="props.nextTab()"
+                  v-b-tooltip.hover
+                  :title="tooltipconfirmar"
                 >
                   Confirmar Etiquetado
                 </button>
                 <template
-                  v-if="
-                    !etiquetasSinCambiar &&
-                      info['setetmigasfree'].value &&
-                      info['setsavetagstmp'].value
-                  "
+                  v-if="!etiquetasSinCambiar && !info['setetmigasfree'].value"
+                >
+                  <button
+                    class="btn boton rounded font-titulo w-100"
+                    v-if="props.isLastStep"
+                    @click.prevent="hideWindow()"
+                    v-b-tooltip.hover
+                    :title="tooltipocultar"
+                  >
+                    Ocultar Ventana
+                  </button>
+                </template>
+                <template
+                  v-if="!etiquetasSinCambiar && info['setetmigasfree'].value"
                 >
                   <button
                     class="btn boton rounded font-titulo w-100"
                     v-if="props.isLastStep"
                     @click.prevent="closeWindow(0)"
                     v-b-tooltip.hover
-                    :title="tooltipactualizar"
+                    :title="tooltipocerrar"
                   >
-                    Actualizar contra Migasfree
+                    Cerrar
                   </button>
                 </template>
               </div>
@@ -111,13 +141,15 @@ module.exports = {
   name: "home",
   components: {
     // El nombre de los Componentes sólo puede tener en mayúsculas la primera letra
+    // El nombre del archivo *.vue puede tener diferentes mayúsculas pero el componente no
     Etiquetasmigasfree: httpVueLoader("../components/EtiquetasMigasfree.vue"),
     Confirmarinfo: httpVueLoader("../components/ConfirmarInfo.vue"),
-    Ejecutarinfo: httpVueLoader("../components/EjecutarInfo.vue")
+    Ejecutarinfo: httpVueLoader("../components/EjecutarInfo.vue"),
+    Mostrarinfo: httpVueLoader("../components/MostrarInfo.vue"),
   },
   created() {},
   mounted() {},
-  data: function() {
+  data: function () {
     return {
       // Título y Subtitúlo del Form Wizard
       titulo: "",
@@ -126,9 +158,18 @@ module.exports = {
       titulo1: "Selecciona Etiquetas",
       titulo2: "Confirma Etiquetas",
       titulo3: "Comprueba y Termina",
-      tooltipactualizar:
-        "Tus etiquetas ya estan aplicadas. Puedes pinchar en Salir y esperar al siguiente inicio de sesión para que surtan efecto, o puedes actualizar ahora contra Migasfree.",
-      tooltipanterior: "Volver a seleccionar Etiquetas Migasfree"
+      titulo4: "Información Resultante",
+      tooltipsalir:
+        "Si no estas seguro de que Etiquetas Migasfree quieres asignar puedes abortar y salir sin provocar cambios en el Equipo",
+      tooltipcontinuar:
+        "Tras elegir tus Etiquetas Migasfree deseadas continua para asignarlas a tu Equipo",
+      tooltipocultar:
+        "Tus etiquetas se estan aplicando y sincronizando contra Migasfree. Si quieres puedes ocultar la ventana",
+      tooltipanterior: "Volver a seleccionar Etiquetas Migasfree",
+      tooltipconfirmar:
+        "Confirma Etiquetado Migasfree para asignarlo al Equipo",
+      tooltipocerrar:
+        "Asignación de Etiquetas Terminada. Puedes cerrar la aplicación ahora aunque es aconsejable comprobar los mensajes de salida por si hubiera habido algún error",
     };
   },
   computed: {
@@ -147,8 +188,8 @@ module.exports = {
       },
       set(value) {
         this.ModificarInfo({ name: "paso", value: value });
-      }
-    }
+      },
+    },
   },
   watch: {
     pasarSiguiente(New, Old) {
@@ -169,10 +210,14 @@ module.exports = {
       if (New) {
         this.saveTmpMigasfreeTags();
       }
-    }
+    },
   },
   methods: {
-    ...Vuex.mapActions(["ModificarInfo", "ExecCommandAndSetParamAsync"]),
+    ...Vuex.mapActions([
+      "ModificarInfo",
+      "ExecCommandAndSetParamAsync",
+      "AsignarEtiquetas",
+    ]),
     siguienteEnlace() {
       this.$nextTick(() => {
         // Cuando el DOM se ha actualizado cambiamos de tab:
@@ -193,19 +238,21 @@ module.exports = {
     },
     saveTmpMigasfreeTags() {
       // Si la modificación anterior ha sido exitosa se guardarán en: /tmp/migasfree.tags
-      console.log("=> Vamos a guardar las Tags en /tmp/migasfree.tags ...");
+      let mensaje = "=> Vamos a guardar las Tags en /tmp/migasfree.tags ...";
+      console.log(mensaje);
+      process.stdout.write("mensaje");
       comando =
         this.listaEtFinal.length > 0
           ? `sudo vx-migasfree-tags-save-tmp ${this.listaEtFinal.join(" ")}`
           : "sudo vx-migasfree-tags-save-tmp ''";
-      // this.AsignarEtiquetas({ comando });
-      this.ExecCommandAndSetParamAsync({
-        comando,
-        mutacion: "ModificarInfo",
-        parametro: "setsavetagstmp",
-        valorok: true,
-        valorerr: false
-      });
+      // migasfree-tags -s ya guarda las etiquetas en el fichero temporal:
+      // this.ExecCommandAndSetParamAsync({
+      //   comando,
+      //   mutacion: "ModificarInfo",
+      //   parametro: "setsavetagstmp",
+      //   valorok: true,
+      //   valorerr: false
+      // });
     },
     ejecutarConfirmacion() {
       console.log("=> Ejecutamos lo indicado por el usuario ...");
@@ -214,23 +261,28 @@ module.exports = {
       if (!this.etiquetasSinCambiar) {
         comando =
           this.listaEtFinal.length > 0
-            ? `sudo migasfree-tags -c ${this.listaEtFinal.join(" ")}`
-            : "sudo migasfree-tags -c ''";
-        // this.AsignarEtiquetas({ comando });
-        this.ExecCommandAndSetParamAsync({
-          comando,
+            ? `sudo migasfree-tags -s ${this.listaEtFinal.join(" ")}`
+            : "sudo migasfree-tags -s ''";
+        // this.listaEtFinal.length > 0
+        // ? `sudo migasfree-tags -c ${this.listaEtFinal.join(" ")}`
+        // : "sudo migasfree-tags -c ''";
+        // this.ExecCommandAndSetParamAsync({
+        //   comando,
+        //   mutacion: "ModificarInfo",
+        //   parametro: "setetmigasfree",
+        //   valorok: true,
+        //   valorerr: false,
+        // });
+        this.AsignarEtiquetas({
+          etiquetas: this.listaEtFinal,
           mutacion: "ModificarInfo",
           parametro: "setetmigasfree",
           valorok: true,
-          valorerr: false
+          valorerr: false,
         });
-        /* resultado = this.EjecutarSincrono(comando);
-        resultado != "error"
-          ? this.ModificarInfo({ name: "setetmigasfree", value: true })
-          : this.ModificarInfo({ name: "setetmigasfree", value: false }); */
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

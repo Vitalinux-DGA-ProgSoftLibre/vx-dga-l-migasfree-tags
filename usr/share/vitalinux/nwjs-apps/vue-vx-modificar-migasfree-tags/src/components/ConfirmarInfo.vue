@@ -2,7 +2,8 @@
   <div class="row borde1 rounded justify-content-center">
     <div :class="['col-' + anchura, 'mt-2', 'mb-2']">
       <b-badge variant="primary" style="font-size: 1.3em;"
-        >¿Confirmas tu Etiquetado Migasfree?</b-badge
+        >¿Confirmas tu Etiquetado Migasfree?
+        <span v-if="etiquetasSinCambiar">¡¡No ha Variado!!</span></b-badge
       >
     </div>
     <!-- Etiquetado Migasfree: -->
@@ -11,7 +12,7 @@
         :class="[
           'material-icons',
           'align-middle',
-          'text-'.concat(calcularClass('setetmigasfree'))
+          'text-'.concat(calcularClass('setetmigasfree')),
         ]"
         >{{
           info["setetmigasfree"].value === null
@@ -60,7 +61,7 @@
 <script>
 module.exports = {
   props: {
-    anchura: { type: Number, default: 8 }
+    anchura: { type: Number, default: 8 },
   },
   mounted() {},
   created() {},
@@ -73,8 +74,8 @@ module.exports = {
       "listaEtFinal",
       "classIpCache",
       "classEtMigasfree",
-      "etiquetasSinCambiar"
-    ])
+      "etiquetasSinCambiar",
+    ]),
   },
   methods: {
     calcularClass(campo) {
@@ -84,9 +85,9 @@ module.exports = {
         : valor === true
         ? "success"
         : "danger";
-    }
+    },
   },
-  watch: {}
+  watch: {},
 };
 </script>
 

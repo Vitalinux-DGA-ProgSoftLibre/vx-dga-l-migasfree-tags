@@ -4,7 +4,7 @@ Vue.mixin({
   },
   created() {},
   components: {
-    PulseLoader
+    PulseLoader,
   },
   methods: {
     openDevTools() {
@@ -19,6 +19,15 @@ Vue.mixin({
     exitApp(codigo) {
       console.log("Mandando exit al sistema con codigo: " + codigo);
       execSync(`exit ${codigo}`);
+    },
+    hideWindow() {
+      // Escondemos la ventana para que el usuario advierta que se esta cerrando la app:
+      nw.Window.get().hide();
+    },
+    restoreWindow() {
+      // Mostramos la ventana si esta oculta:
+      nw.Window.get().show(true);
+      nw.Window.get().focus();
     },
     closeWindow(codigo) {
       // Escondemos la ventana para que el usuario advierta que se esta cerrando la app:
@@ -44,10 +53,10 @@ Vue.mixin({
       if (this.Argumentos.length > 0) {
         nw.process.stdout.write(
           "=> Los " +
-          this.Argumentos.length +
-          " argumentos pasados al ejecutable son: " +
-          this.Argumentos +
-          "\n"
+            this.Argumentos.length +
+            " argumentos pasados al ejecutable son: " +
+            this.Argumentos +
+            "\n"
         );
         nw.process.stdout.write(
           "=> El primer argumento es: " + this.Argumentos[0] + "\n"
@@ -73,7 +82,7 @@ Vue.mixin({
       // http://docs.nwjs.io/en/latest/References/Window/#windowopenurl-options-callback
       let options = {
         width: 800,
-        height: 600
+        height: 600,
         //fullscreen: true
       };
       nw.Window.open(url, options, function (win) {
@@ -81,7 +90,7 @@ Vue.mixin({
         console.log("Se ha abierto una nueva ventana en tu aplicación: " + url);
         //});
       });
-    }
+    },
   },
   computed: {
     Argumentos() {
@@ -112,6 +121,6 @@ Vue.mixin({
     },
     currentDirectory() {
       return nw.process.cwd();
-    }
-  }
+    },
+  },
 });

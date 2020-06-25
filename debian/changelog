@@ -3,6 +3,7 @@ vx-dga-l-migasfree-tags (2.1-4) unstable; urgency=low
   * Modificamos /usr/share/divert/usr/bin/migasfree-tags para tener en cuenta la opción -s
   * Modificamos mixins-funcs-nw.js y evitar el migasfree upgrade al terminar
   * Modificamos MapaCentros.vue
+  * Modificamos store.js para añadir la action AsignarEtiquetas
 
  -- Arturo Martín <amartinromero@gmail.com>  Tue, 16 Jun 2020 09:45:06 +0200
 

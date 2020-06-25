@@ -5,7 +5,8 @@ Vue.mixin({
       usuario: "vacio",
       resultado: [],
       mensajeexec: "",
-      usuariosgraficos: null
+      usuariosgraficos: null,
+      resultado_ejecucion: ""
     }
   },
   methods: {

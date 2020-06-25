@@ -6,7 +6,7 @@ Vue.mixin({
         "font-weight-bold",
         "bg-info",
         "text-white",
-        "w-100"
+        "w-100",
       ],
       connectionStatus: null,
       // keycodes:
@@ -20,16 +20,22 @@ Vue.mixin({
       // Un nombre de usuario:
       // 1) Debe empezar por: [a-z]
       // 2) Le puede seguir [a-z], "-", ".", "_"
-      caracposiblenombreusu: [...this.rango(97, 122, 1), ...this.rango(48, 57, 1), 45, 46, 95]
-    }
+      caracposiblenombreusu: [
+        ...this.rango(97, 122, 1),
+        ...this.rango(48, 57, 1),
+        45,
+        46,
+        95,
+      ],
+    };
   },
   methods: {
     thereIsInternet() {
       if (navigator.onLine) {
-        console.log("Ok!! Se ha detectado conexión con Internet")
+        console.log("Ok!! Se ha detectado conexión con Internet");
         this.connectionStatus = true;
       } else {
-        console.log("Error!! No se ha detectado conexión con Internet")
+        console.log("Error!! No se ha detectado conexión con Internet");
         this.connectionStatus = false;
       }
     },
@@ -45,7 +51,7 @@ Vue.mixin({
       let re = new RegExp(
         /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/
       );
-      return re.test(ip)
+      return re.test(ip);
     },
     CheckNombreEq($event) {
       console.log($event.keyCode); //keyCodes value
@@ -71,18 +77,21 @@ Vue.mixin({
     },
     //const rango = (start, stop, step) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
     rango(start, stop, step) {
-      return Array.from({
-        length: (stop - start) / step + 1
-      }, (_, i) => start + (i * step))
+      return Array.from(
+        {
+          length: (stop - start) / step + 1,
+        },
+        (_, i) => start + i * step
+      );
     },
     isValidUsername($event, nombre) {
       // Un nombre de usuario:
       // 1) Debe empezar por: [a-z]
       // 2) Le puede seguir [a-z], "-", ".", "_"
       // let nameRegex = RegExp(/^[a-z][a-z0-9-_,\.]+$/);
-      console.log("El nombre hasta ahora: " + nombre)
+      console.log("El nombre hasta ahora: " + nombre);
       // Comprobamos si es el primer caracter:
-      let nameRegex
+      let nameRegex;
       if (nombre === null || nombre === "") {
         nameRegex = RegExp(/^[a-z]$/);
       } else {
@@ -91,6 +100,6 @@ Vue.mixin({
       if (!nameRegex.test($event.key)) {
         $event.preventDefault();
       }
-    }
+    },
   },
-})
+});
