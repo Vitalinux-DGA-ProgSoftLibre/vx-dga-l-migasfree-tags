@@ -27,7 +27,7 @@
   },
   "window": {
     "title": "Modificar Etiquetas Migasfree",
-    "resizable": false,
+    "resizable": true,
     "fullscreen": false,
     "position": "center",
     "width": 800,

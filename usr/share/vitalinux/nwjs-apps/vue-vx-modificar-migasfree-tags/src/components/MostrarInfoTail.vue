@@ -1,10 +1,7 @@
 <template>
-  <div class="card border-secondary mb-3" style="max-width: 18rem;">
-    <div class="card-header">
-      Comunicación con Migasfree - Asignación de Etiquetas
-    </div>
-    <div class="card-body text-secondary contenido">
-      <p class="card-text">{{ contenido }}</p>
+  <div class="row justify-content-center">
+    <div :class="['col-' + anchura, 'contenido']" ref="contenido">
+      <span v-html="contenido"></span>
     </div>
   </div>
 </template>
@@ -13,16 +10,22 @@
 export default {
   name: "mostrarinfotail",
   props: {
-    contenido: { type: String, default: "-- no hay contenido que mostrar --" },
+    contenido: { type: String, default: "-- No hay contenido que mostrar --" },
+    anchura: { type: Number, default: 10 },
   },
 };
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 .contenido {
+  margin-top: 1em;
+  text-align: left;
+  height: 120px;
   padding: 15px;
-  background-color: azure;
-  max-height: 350px;
+  background-color: skyblue;
+  color: white;
+  font-size: small;
+  max-height: 120px;
   overflow: scroll;
   overflow-x: auto;
   overflow-y: auto;

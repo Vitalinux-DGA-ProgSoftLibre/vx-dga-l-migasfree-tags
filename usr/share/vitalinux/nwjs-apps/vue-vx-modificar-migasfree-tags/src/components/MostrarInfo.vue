@@ -58,32 +58,38 @@
         }}
       </b-badge>
 
+      <!-- Mostramos la lista de Etiquetas deseada: -->
       <template v-if="listaEtFinal != null">
         <div class="row">
-          <div class="col-12">
-            <b-badge :variant="classEtMigasfree">{{
+          <div
+            :class="[
+              'bg-' + calcularClass('setetmigasfree'),
+              'p-2',
+              'listafinal',
+              'border-info',
+              'rounded',
+            ]"
+          >
+            {{
               listaEtFinalCadena == null
                 ? "Ninguna Etiqueta"
                 : listaEtFinalCadena
-            }}</b-badge>
+            }}
+            <!-- <b-badge :variant="classEtMigasfree">{{
+              listaEtFinalCadena == null
+                ? "Ninguna Etiqueta"
+                : listaEtFinalCadena
+            }}</b-badge> -->
           </div>
         </div>
-
-        <!-- <div class="row" v-for="(et, index) in listaEtFinal" :key="index">
-          <div class="col-12">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <b-badge :variant="classEtMigasfree">{{ index + 1 }}</b-badge>
-            <b-badge :variant="classEtMigasfree" class="ml-1 mr-1">
-              {{ et === "" ? "Ninguna Etiqueta" : et }}
-            </b-badge>
-          </div>
-        </div> -->
       </template>
 
       <template v-else>
         <b-badge>No hay Etiquetas que asignar ...</b-badge>
       </template>
     </div>
+    <!-- Problema para mandar contenido asincrono al componente Mostrarinfotail: -->
+    <!-- <Mostrarinfotail :contenido="contenido" :anchura="10" /> -->
     <div class="row justify-content-center">
       <div class="col-10 contenido" ref="contenido">
         <span v-html="contenido"></span>
@@ -97,30 +103,29 @@
       <!-- <div class="cols-2"></div> -->
       <div class="row" style="margin-top: 1em;">
         <div class="cols-8 mx-auto">
-          <div class="text-center">
-            <figure class="figure">
-              <pulse-loader color="#3AB982"></pulse-loader>
+          <div
+            class="text-center rounded p-2"
+            style="
+              display: flex;
+              align-tiems: center;
+              background-color: gray;
+              color: white;
+            "
+          >
+            <pulse-loader class="align-middle" color="#5bc0de"></pulse-loader>
+            <figcaption class="align-middle ml-2" style="font-size: smaller;">
+              Esperando a terminar la Asignación de Etiquetas ...
+            </figcaption>
+            <!-- <figure class="figure">
+              <pulse-loader color="#5bc0de"></pulse-loader>
               <figcaption class="figure-caption text-center">
                 Esperando a terminar la Asignación de Etiquetas ...
               </figcaption>
-            </figure>
+            </figure> -->
           </div>
         </div>
       </div>
     </div>
-    <!-- <div
-      class="row"
-      v-if="!etiquetasSinCambiar && info['setetmigasfree'].value === null"
-    >
-      <div class="row">
-        <div>
-          <p>
-            Comunicación con Migasfree - Asignación de Etiquetas
-          </p>
-          <div class="contenido">{{ contenido }}</div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -237,12 +242,22 @@ module.exports = {
   text-align: left;
   height: 120px;
   padding: 15px;
-  background-color: skyblue;
+  background-color: black;
   color: white;
   font-size: small;
   max-height: 120px;
   overflow: scroll;
   overflow-x: auto;
   overflow-y: auto;
+}
+.listafinal {
+  font-size: smaller;
+  color: white;
+  font-weight: bold;
+  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
+  /* height: 50px; */
+  max-height: 50px;
 }
 </style>

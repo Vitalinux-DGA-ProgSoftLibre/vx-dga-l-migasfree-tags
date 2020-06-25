@@ -217,49 +217,23 @@ const store = new Vuex.Store({
       // var spawn = require('child_process').spawn;
       let mibuffer = "";
       try {
-        // const {
-        //   spawn
-        // } = require('child_process');
-
+        // spawn esta requerido en nw-const-funcs.js:
         //const comando = spawn('sudo', ['migasfree-tags', '-s', 'CEN-CIFEMA', 'CEN-CIFEMA.SALASINF', 'ENT-PROFESOR']);
         const comando = spawn("sudo", args_comando);
-
-        // $('#logresultado2').html('');
-        var data = "";
+        let data = "";
         comando.stdout.on("data", (data) => {
+          // sed -r 's/'$(echo -e "\033")'\[[0-9]{1,2}(;([0-9]{1,2})?)?[mK]//g'
+          // Data es un objeto que habrá que pasar a String para poder reemplazar el código de colores. Para ello:
+          // 1) Se le puede pasar directamente el objeto "data" y en la función colorReplace hacer uso de .toString()
+          // 2) Se le pasa directamente "data" en formato String haciendo uso de `${data}`
+          // colorReplace(`${data}`, true);
           mibuffer += colorReplace(data.toString(), true) + "<br>";
           console.log(data.toString());
           process.stdout.write(data.toString());
           commit("ModificarInfo", {
             name: "comunicacion",
-            // value: data.toString(),
             value: mibuffer,
           });
-
-          // this.resultado_ejecucion = colorReplace(data, true);
-          if (data) {
-            // sed -r 's/'$(echo -e "\033")'\[[0-9]{1,2}(;([0-9]{1,2})?)?[mK]//g'
-            // Data es un objeto que habrá que pasar a String para poder reemplazar el código de colores. Para ello:
-            // 1) Se le puede pasar directamente el objeto "data" y en la función colorReplace hacer uso de .toString()
-            // 2) Se le pasa directamente "data" en formato String haciendo uso de `${data}`
-            //salida = colorReplace(`${data}`, true);
-            this.resultado_ejecucion = this.colorReplace(data, true);
-            console.log(
-              `=> Datos devueltos por la ejecución: ${this.resultado_ejecucion}`
-            );
-          }
-          this.resultado_ejecucion += `<br>Otro más<br>`;
-          // // Generamos la salida añadiendo a lo que ya había, ya que va escupiendo datos "data" a medida que migasfree-tags los va generando
-          // $('#logresultado2').append(`${this.resultado_ejecucion}`);
-
-          // // Animamos la división para que el scroll se desplace automáticamente teniendo en cuenta
-          // //   la altura de su contenido con $('#logresultado2')[0].scrollHeight
-          // $('#logresultado2').scroll();
-          // $("#logresultado2").animate({
-          //   scrollTop: $('#logresultado2')[0].scrollHeight
-          // }, 'fast', function () {
-
-          // });
         });
         // Función a ejecutar al terminar de hacer lo encomendado: "end"
         comando.stdout.on("end", (data) => {
@@ -289,10 +263,23 @@ const store = new Vuex.Store({
         });
         // Evento final tras terminar todo: "close"
         comando.on("close", (code) => {
+          mensaje =
+            "############## <b>YA PUEDES CERRAR LA APLICACIÓN</b> ##############<br><br>";
+          mensaje +=
+            "=> Ya ha terminado la asignación de etiquetas. aunque es aconsejable comprobar si ha habido errores/problemas en la comunicación con Migasfree.<br><br>";
+          mensaje +=
+            "##################### <b>https://soporte.vitalinux.educa.aragon.es</b> #####################<br>";
           //swal("Terminado!!", "Se ha terminado!!", "error");
           process.stdout.write(
             "=> Ya ha terminado la asignación de etiquetas ...\n"
           );
+          mibuffer +=
+            mensaje +
+            "<br><br>-- Equipo Técnico Vitalinux <b>vitalinux@educa.aragon.es</b><br><br>·";
+          commit("ModificarInfo", {
+            name: "comunicacion",
+            value: mibuffer,
+          });
         });
       } catch (err) {
         // swal("¡¡Cancelado!!", "¡¡Problema con la actualización de etiquetas!!", "error");
