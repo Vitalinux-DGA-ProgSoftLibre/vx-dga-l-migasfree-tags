@@ -213,7 +213,9 @@ const store = new Vuex.Store({
       // Creamos un Array con todos los argunmentos necesarios para ejectutar el comando "sudo" necesario:
       // sudo migasfree-tags [-c|-s] <listado de etiquetas>
       args_comando = ["migasfree-tags", "-s", ...etiquetas];
-      process.stdout.write("=> Comando a Ejecutar: >" + args_comando + "<\n");
+      process.stdout.write(
+        "=> Comando a Ejecutar: >sudo " + args_comando.join(" ") + "<\n"
+      );
       // var spawn = require('child_process').spawn;
       let mibuffer = "";
       try {

@@ -3,9 +3,16 @@ vx-dga-l-migasfree-tags (2.1-4) unstable; urgency=low
   * Modificamos /usr/share/divert/usr/bin/migasfree-tags para tener en cuenta la opción -s
   * Modificamos mixins-funcs-nw.js y evitar el migasfree upgrade al terminar
   * Modificamos MapaCentros.vue
-  * Modificamos store.js para añadir la action AsignarEtiquetas
+  * Modificamos store.js para añadir la action AsignarEtiquetas y el estado comunicacion
+  * Modificamos Home.vue para que modificar el comportamiento del formulario y que ejecutar
+  * Mofificamos Home.vue y usar AsignarEtiquetas con spawn en lugar de ExecCommandAndSetParamAsync
+  * Modificamos router.js para modificar el texto de la pestaña a Etiquetado Migasfree
+  * Modificamos package.json para que la ventana sea resizable
+  * Modificamos nw-tray.js para modificar el tooltip
+  * Modificamos nw-const-funcs.js para añadir spawn y colorReplace para respetar colores de consola
+  * Añadimos MostrarInfo.vue para mostrar la comunicación en la asignación de etiquetas
 
- -- Arturo Martín <amartinromero@gmail.com>  Tue, 16 Jun 2020 09:45:06 +0200
+ -- Arturo Martín <amartinromero@gmail.com>  Fri, 26 Jun 2020 09:45:06 +0200
 
 vx-dga-l-migasfree-tags (2.1-3) unstable; urgency=low
 

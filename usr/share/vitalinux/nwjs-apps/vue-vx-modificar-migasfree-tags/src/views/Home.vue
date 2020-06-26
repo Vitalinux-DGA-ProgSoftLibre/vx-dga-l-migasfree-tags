@@ -259,22 +259,13 @@ module.exports = {
       let resultado = null;
 
       if (!this.etiquetasSinCambiar) {
-        comando =
-          this.listaEtFinal.length > 0
-            ? `sudo migasfree-tags -s ${this.listaEtFinal.join(" ")}`
-            : "sudo migasfree-tags -s ''";
-        // this.listaEtFinal.length > 0
-        // ? `sudo migasfree-tags -c ${this.listaEtFinal.join(" ")}`
-        // : "sudo migasfree-tags -c ''";
-        // this.ExecCommandAndSetParamAsync({
-        //   comando,
-        //   mutacion: "ModificarInfo",
-        //   parametro: "setetmigasfree",
-        //   valorok: true,
-        //   valorerr: false,
-        // });
+        // comando =
+        //   this.listaEtFinal.length > 0
+        //     ? `sudo migasfree-tags -s ${this.listaEtFinal.join(" ")}`
+        //     : "sudo migasfree-tags -s ''";
+        let listado = this.listaEtFinal.length > 0 ? this.listaEtFinal : '""';
         this.AsignarEtiquetas({
-          etiquetas: this.listaEtFinal,
+          etiquetas: listado,
           mutacion: "ModificarInfo",
           parametro: "setetmigasfree",
           valorok: true,
